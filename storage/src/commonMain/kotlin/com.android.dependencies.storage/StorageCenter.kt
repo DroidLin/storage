@@ -6,9 +6,21 @@ package com.android.dependencies.storage
  */
 interface StorageCenter {
 
-    fun newStorage(directoryPath: String, storageName: String, storageType: StorageType): Storage
+    fun newMapStorage(
+        storageType: StorageType,
+        directory: String,
+        storageName: String
+    ): MapStorage
 
-    fun newMapStorage(directoryPath: String, storageName: String): MapStorage
+    fun newMutableMapStorage(
+        storageType: StorageType,
+        directory: String,
+        storageName: String
+    ): MutableMapStorage
 
-    fun newFileStorage(directoryPath: String, storageName: String): FileStorage
+    fun newFileStorage(
+        storageType: StorageType,
+        directory: String,
+        storageName: String
+    ): FileStorage
 }

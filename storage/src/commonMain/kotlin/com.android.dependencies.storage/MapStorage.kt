@@ -4,12 +4,14 @@ package com.android.dependencies.storage
  * @author liuzhongao
  * @since 2024/3/27 23:21
  */
-interface MapStorage : FileStorage {
+interface MapStorage : Storage {
 
     /**
      * copies of inner map
      */
     val all: Map<String, Any?>
+
+    fun get(key: String, default: Any?): Any?
 
     fun contains(key: String): Boolean
 

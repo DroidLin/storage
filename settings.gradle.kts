@@ -19,6 +19,4 @@ dependencyResolutionManagement {
 
 
 rootProject.name = "storage"
-include(":android-only-module")
 include(":storage")
-include(":jvm-only-module")
