@@ -8,7 +8,7 @@ import java.util.concurrent.Executors
  */
 fun main() {
     val executor = Executors.newFixedThreadPool(4)
-    val storage = MutableMapStorage("/Users/liuzhongao", "test.txt")
+    val storage = instantiateMutableMapStorage(JvmStorageType.JSON, "/Users/liuzhongao", "test.txt") ?: return
 
     val future1 = executor.submit {
         val startTimestamp = System.currentTimeMillis()

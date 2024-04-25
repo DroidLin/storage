@@ -29,10 +29,6 @@ operator fun <T> MapStorageState<T>.getValue(thisRef: Any?, property: KProperty<
     return this.mapStorage.get(this.key, this.default) as T
 }
 
-operator fun <T> MutableMapStorageState<T>.setValue(
-    thisRef: Any?,
-    property: KProperty<*>,
-    value: T
-) {
+operator fun <T> MutableMapStorageState<T>.setValue(thisRef: Any?, property: KProperty<*>, value: T) {
     this.mapStorage.put(this.key, value)
 }

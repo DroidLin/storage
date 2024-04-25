@@ -11,5 +11,7 @@ interface FileStorage : Storage {
      */
     val byteArray: ByteArray
 
+    val isBeingModified: Boolean
+
     fun write(byteArray: ByteArray)
 }

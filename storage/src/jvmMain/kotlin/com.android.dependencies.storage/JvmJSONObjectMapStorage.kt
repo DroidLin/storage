@@ -28,7 +28,7 @@ internal open class JvmJSONObjectMapStorage(
     private var lastFileModifiedTimestamp: Long = fileSystemFile.lastModified()
 
     override val absolutePath: String = filePath
-    override val storageName: String = fileName
+    override val filename: String = fileName
     override val all: Map<String, Any?>
         get() {
             this.trySyncStorageFromFileSystem()

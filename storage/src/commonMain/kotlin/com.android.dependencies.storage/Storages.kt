@@ -6,10 +6,8 @@ package com.android.dependencies.storage
  */
 internal expect val platformName: String
 
-internal expect fun ImmutableMapStorage(filePath: String, fileName: String): MapStorage
-
-internal expect fun MutableMapStorage(filePath: String, fileName: String): MutableMapStorage
-
 internal expect fun instantiateMapStorage(storageType: StorageType, directory: String, storageName: String): MapStorage?
 
 internal expect fun instantiateMutableMapStorage(storageType: StorageType, directory: String, storageName: String): MutableMapStorage?
+
+internal expect fun instantiateFileStorage(storageType: StorageType, absolutePath: String, filename: String): FileStorage?

@@ -10,15 +10,20 @@ internal object StorageCenterImpl : StorageCenter {
         storageType: StorageType,
         directory: String,
         storageName: String
-    ): MapStorage = instantiateMapStorage(storageType, directory, storageName) ?: throw NullPointerException("no storage matched type: $storageType")
+    ): MapStorage = instantiateMapStorage(storageType, directory, storageName)
+        ?: throw NullPointerException("no storage matched type: $storageType")
 
     override fun newMutableMapStorage(
         storageType: StorageType,
         directory: String,
         storageName: String
-    ): MutableMapStorage = instantiateMutableMapStorage(storageType, directory, storageName) ?: throw NullPointerException("no storage matched type: $storageType")
+    ): MutableMapStorage = instantiateMutableMapStorage(storageType, directory, storageName)
+        ?: throw NullPointerException("no storage matched type: $storageType")
 
-    override fun newFileStorage(storageType: StorageType, directory: String, storageName: String): FileStorage {
-        TODO("Not yet implemented")
-    }
+    override fun newFileStorage(
+        storageType: StorageType,
+        directory: String,
+        storageName: String
+    ): FileStorage = instantiateFileStorage(storageType, directory, storageName)
+        ?: throw NullPointerException("no storage matched type: $storageType")
 }

@@ -6,21 +6,13 @@ package com.android.dependencies.storage
  */
 internal actual val platformName: String get() = "JvmOnlyPlatform"
 
-internal actual fun ImmutableMapStorage(filePath: String, fileName: String): MapStorage {
-    return JvmJSONObjectMapStorage(filePath, fileName)
-}
-
-internal actual fun MutableMapStorage(filePath: String, fileName: String): MutableMapStorage {
-    return JvmJSONObjectMutableMapStorage(filePath, fileName)
-}
-
 internal actual fun instantiateMapStorage(
     storageType: StorageType,
     directory: String,
     storageName: String
 ): MapStorage? {
     return when (storageType) {
-        JvmStorageType.JSON -> ImmutableMapStorage(directory, storageName)
+        JvmStorageType.JSON -> JvmJSONObjectMapStorage(directory, storageName)
         else -> null
     }
 }
@@ -31,7 +23,15 @@ internal actual fun instantiateMutableMapStorage(
     storageName: String
 ): MutableMapStorage? {
     return when (storageType) {
-        JvmStorageType.JSON -> MutableMapStorage(directory, storageName)
+        JvmStorageType.JSON -> JvmJSONObjectMutableMapStorage(directory, storageName)
         else -> null
     }
+}
+
+internal actual fun instantiateFileStorage(
+    storageType: StorageType,
+    absolutePath: String,
+    filename: String
+): FileStorage? {
+    return FileStorage(absolutePath, filename)
 }

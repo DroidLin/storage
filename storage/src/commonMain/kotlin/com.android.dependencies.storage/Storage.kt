@@ -8,5 +8,5 @@ interface Storage {
 
     val absolutePath: String
 
-    val storageName: String
+    val filename: String
 }

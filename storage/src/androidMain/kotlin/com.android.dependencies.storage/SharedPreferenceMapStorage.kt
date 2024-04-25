@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.android.dependencies.common.ComponentFacade
 import com.android.dependencies.common.android.IContext
-import kotlin.concurrent.read
 
 /**
  * @author liuzhongao
@@ -21,7 +20,7 @@ internal open class SharedPreferenceMapStorage(
     override val all: Map<String, Any?> get() = this.sharedPreference.all
 
     override val absolutePath: String = ""
-    override val storageName: String = fileName
+    override val filename: String = fileName
 
     override fun get(key: String, default: Any?): Any? {
         return when (default) {
