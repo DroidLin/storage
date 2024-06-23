@@ -1,11 +1,7 @@
 package com.android.dependencies.storage
 
 import org.json.JSONObject
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.io.RandomAccessFile
+import java.io.*
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
 import kotlin.concurrent.write
@@ -20,6 +16,18 @@ internal open class JvmJSONObjectMapStorage(
 ) : MapStorage {
 
     private val fileSystemFile: File = File(filePath, fileName)
+
+    init {
+        if (!this.fileSystemFile.exists()) {
+            val parentDirectory = this.fileSystemFile.parentFile
+            if (!parentDirectory.exists()) {
+                if (parentDirectory.mkdirs()) {
+                    this.fileSystemFile.createNewFile()
+                }
+            } else this.fileSystemFile.createNewFile()
+        }
+    }
+
     private val randomAccessFile = RandomAccessFile(this.fileSystemFile, "rw")
 
     protected val innerMutableMap = LinkedHashMap<String, Any?>()
