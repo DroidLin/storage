@@ -140,7 +140,7 @@ internal open class JvmJSONObjectMapStorage(
         val byteArrayInFile = this.reentrantLock.read {
             this.readByteArray()
         }
-        val contentString = String(byteArrayInFile)
+        val contentString = byteArrayInFile.decodeToString()
         kotlin.runCatching {
             JSONObject(contentString)
         }.onSuccess { jsonObject ->
@@ -162,15 +162,13 @@ internal open class JvmJSONObjectMapStorage(
             return ByteArray(0)
         }
         return FileInputStream(this.fileSystemFile).use { fileInputStream ->
-            this.randomAccessFile.channel.lock().use { _ ->
-                val byteArray = ByteArray(1024)
-                val byteArrayOutputStream = ByteArrayOutputStream()
-                var bytesRead = 0
-                while (fileInputStream.read(byteArray).also { bytesRead = it } != -1) {
-                    byteArrayOutputStream.write(byteArray, 0, bytesRead)
-                }
-                byteArrayOutputStream.toByteArray()
+            val byteArray = ByteArray(1024)
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            var bytesRead = 0
+            while (fileInputStream.read(byteArray).also { bytesRead = it } != -1) {
+                byteArrayOutputStream.write(byteArray, 0, bytesRead)
             }
+            byteArrayOutputStream.toByteArray()
         }
     }
 
