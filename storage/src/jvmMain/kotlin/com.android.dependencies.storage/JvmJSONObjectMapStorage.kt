@@ -33,7 +33,7 @@ internal open class JvmJSONObjectMapStorage(
     protected val innerMutableMap = LinkedHashMap<String, Any?>()
     protected val reentrantLock = ReentrantReadWriteLock()
 
-    private var lastFileModifiedTimestamp: Long = fileSystemFile.lastModified()
+    private var lastFileModifiedTimestamp: Long = 0
 
     override val absolutePath: String = filePath
     override val filename: String = fileName
@@ -49,9 +49,8 @@ internal open class JvmJSONObjectMapStorage(
         }
     }
 
-    override fun contains(key: String): Boolean {
-        this.trySyncStorageFromFileSystem()
-        return this.reentrantLock.write {
+    override fun contains(key: String): Boolean = keepLatest {
+        this.reentrantLock.write {
             this.innerMutableMap[key] != null
         }
     }
