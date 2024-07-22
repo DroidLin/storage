@@ -6,7 +6,7 @@ import java.util.concurrent.Executors
  * @author liuzhongao
  * @since 2024/4/2 23:22
  */
-fun main() {
+internal fun main() {
     val executor = Executors.newFixedThreadPool(4)
     val storage = instantiateMutableMapStorage(JvmStorageType.JSON, "/Users/liuzhongao", "test.txt") ?: return
 
