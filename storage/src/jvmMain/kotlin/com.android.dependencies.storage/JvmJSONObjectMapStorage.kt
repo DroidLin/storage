@@ -2,6 +2,7 @@ package com.android.dependencies.storage
 
 import org.json.JSONObject
 import java.io.*
+import java.nio.channels.FileLock
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
 import kotlin.concurrent.write
@@ -27,8 +28,6 @@ internal open class JvmJSONObjectMapStorage(
             } else this.fileSystemFile.createNewFile()
         }
     }
-
-    private val randomAccessFile = RandomAccessFile(this.fileSystemFile, "rw")
 
     protected val innerMutableMap = LinkedHashMap<String, Any?>()
     protected val reentrantLock = ReentrantReadWriteLock()
@@ -117,13 +116,16 @@ internal open class JvmJSONObjectMapStorage(
     protected fun flushIntoFileSystem() {
         this.reentrantLock.write {
             this.tryCreateFileAndDirectories(this.fileSystemFile)
-            FileOutputStream(this.fileSystemFile).use { fileOutputStream ->
-                this.randomAccessFile.channel.lock().use { _ ->
-                    val jsonMapStringContent = JSONObject(this.innerMutableMap).toString()
-                    fileOutputStream.write(jsonMapStringContent.toByteArray())
-                    fileOutputStream.flush()
-                    this.lastFileModifiedTimestamp = this.fileSystemFile.lastModified()
-                }
+
+            val randomAccessFile = RandomAccessFile(this.fileSystemFile, "rw")
+            var lock: FileLock?
+            do {
+                lock = randomAccessFile.channel.lock()
+            } while(lock == null)
+            lock.use { _ ->
+                val jsonMapStringContent = JSONObject(this.innerMutableMap).toString()
+                randomAccessFile.writeBytes(jsonMapStringContent)
+                this.lastFileModifiedTimestamp = this.fileSystemFile.lastModified()
             }
         }
     }
