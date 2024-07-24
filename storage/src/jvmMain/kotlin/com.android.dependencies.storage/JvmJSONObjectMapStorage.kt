@@ -116,15 +116,10 @@ internal open class JvmJSONObjectMapStorage(
     protected fun flushIntoFileSystem() {
         this.reentrantLock.write {
             this.tryCreateFileAndDirectories(this.fileSystemFile)
-
-            val randomAccessFile = RandomAccessFile(this.fileSystemFile, "rw")
-            var lock: FileLock?
-            do {
-                lock = randomAccessFile.channel.lock()
-            } while(lock == null)
-            lock.use { _ ->
+            FileOutputStream(this.fileSystemFile, false).use { outputStream ->
                 val jsonMapStringContent = JSONObject(this.innerMutableMap).toString()
-                randomAccessFile.writeBytes(jsonMapStringContent)
+                outputStream.write(jsonMapStringContent.encodeToByteArray())
+                outputStream.flush()
                 this.lastFileModifiedTimestamp = this.fileSystemFile.lastModified()
             }
         }

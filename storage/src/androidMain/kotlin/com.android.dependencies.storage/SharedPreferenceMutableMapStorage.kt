@@ -68,6 +68,11 @@ internal class SharedPreferenceMutableMapStorage(
         this.putString(key, value)
     }
 
+    override fun clearAndFlush() = this.prepareSharedPreferenceEditor {
+        this.clear()
+        this@SharedPreferenceMutableMapStorage.flush()
+    }
+
     override fun flush() {
         synchronized(this) {
             this.tempEditor?.commit()

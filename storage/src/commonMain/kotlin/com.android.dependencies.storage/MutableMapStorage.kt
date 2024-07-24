@@ -26,5 +26,7 @@ interface MutableMapStorage : MapStorage {
 
     fun putString(key: String, value: String?)
 
+    fun clearAndFlush()
+
     fun flush()
 }

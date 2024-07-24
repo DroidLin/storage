@@ -84,6 +84,13 @@ internal class JvmJSONObjectMutableMapStorage(
         }
     }
 
+    override fun clearAndFlush() = keepLatest {
+        this.reentrantLock.write {
+            this.innerMutableMap.clear()
+            this.flushIntoFileSystem()
+        }
+    }
+
     override fun flush() {
         this.flushIntoFileSystem()
     }

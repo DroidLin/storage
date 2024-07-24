@@ -29,11 +29,9 @@ internal fun main() {
 
     val future3 = executor.submit {
         val startTimestamp = System.currentTimeMillis()
-        for (index in 2000 until 3000) {
-            storage.putInt("key_extra_${index}", index)
-        }
-        storage.flush()
-        println("future2 cost: ${System.currentTimeMillis() - startTimestamp}ms")
+        Thread.sleep(100)
+        storage.clearAndFlush()
+        println("future3 cost: ${System.currentTimeMillis() - startTimestamp}ms")
     }
 
     future1.get()
